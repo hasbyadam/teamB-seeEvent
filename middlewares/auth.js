@@ -13,23 +13,30 @@ module.exports = {
         });
       }
       token = token.replace("Bearer ", "");
-      const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
-      const user = await Users.findOne({
-        where: {
-          id: decoded.id,
-        },
-      });
-      if (!user) {
+      jwt.verify(token, process.env.SECRET_TOKEN, async(error, decoded) =>  {
+        if (error)
         return res.status(401).json({
           status: "Unauthorized",
-          message: "User not found",
+          message: "Invalid access token",
         });
-      }
-      req.user = {
-        id: user.id,
-        email: user.email,
-      };
-      next();
+        const user = await Users.findOne({
+          where: {
+            id: decoded.id,
+          },
+        });
+        if (!user) {
+          return res.status(401).json({
+            status: "Unauthorized",
+            message: "User not found",
+          });
+        }
+        req.user = {
+          id: decoded.id,
+          email: decoded.email
+        }
+        next();
+      });
+      
     } catch (error) {
       catchError(error, res);
     }
