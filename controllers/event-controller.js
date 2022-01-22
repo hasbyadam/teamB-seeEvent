@@ -136,9 +136,9 @@ module.exports = {
       }
 
       const events = await Event.findAll({
-        limit: [limitation],
+        limit: limitation,
         offset: (page - 1) * limitation,
-        order: [order],
+        order: order,
         include: [
           {
             model: Users,
