@@ -132,7 +132,7 @@ module.exports = {
       if (!limit) {
         limitation = 8;
       } else {
-        limitation = Number(limit);
+        limitation = BigInt(limit);
       }
 
       const events = await Event.findAll({
