@@ -12,7 +12,7 @@ module.exports = {
       if (keyword) {
         search = {
           title: {
-            [Op.like]: `%${keyword}%`,
+            [Op.iLike]: `%${keyword}%`,
           },
         };
       }
