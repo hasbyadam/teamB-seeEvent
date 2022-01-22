@@ -1,3 +1,3 @@
-release: npm run heroku-release
+release: npm run heroku-release;
 
 web: node app.js

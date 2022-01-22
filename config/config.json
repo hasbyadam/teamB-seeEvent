@@ -4,7 +4,7 @@
     "password": "1324fairplay",
     "database": "eventApp_mvp",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
@@ -14,13 +14,13 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable" : "DATABASE_URL",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
     "protocol": "postgres",
     "dialectOptions": {
       "ssl": {
         "rejectUnauthorized": false
+      }
     }
   }
-}
 }
