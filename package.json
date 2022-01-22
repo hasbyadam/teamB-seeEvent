@@ -7,7 +7,6 @@
     "Dev": "npx nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-release": "node-modules/.bin/sequelize db:migrate && node-modules/.bin/sequelize db:seed:all"
-
   },
   "author": "B Team",
   "license": "ISC",
@@ -26,10 +25,10 @@
     "mysql2": "^2.3.3",
     "passport": "^0.5.2",
     "pg": "^8.7.1",
-    "sequelize": "^6.13.0"
+    "sequelize": "^6.13.0",
+    "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "sequelize-cli": "^6.4.1"
+    "nodemon": "^2.0.15"
   }
 }
