@@ -15,7 +15,6 @@ module.exports = {
         type: Sequelize.DATE,
       },
       detail: {
-        //ganti detail
         type: Sequelize.TEXT,
       },
       image: {

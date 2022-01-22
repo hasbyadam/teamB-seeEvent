@@ -21,13 +21,13 @@ module.exports = {
       let order;
       switch (sort) {
         case "date":
-          order = ["createdAt", "DESC"];
+          order = [["createdAt", "DESC"]];
           break;
         case "name":
-          order = ["title", "ASC"];
+          order = [["title", "ASC"]];
           break;
         default:
-          order = ["createdAt", "ASC"];
+          order = [["createdAt", "ASC"]];
       }
 
       // filter by date
@@ -35,8 +35,8 @@ module.exports = {
       let first, last;
       switch (date) {
         case "today":
-          first = moment().tz("UTC").startOf("day").toDate();
-          last = moment().tz("UTC").endOf("day").toDate();
+          first = moment().startOf("day").toDate();
+          last = moment().endOf("day").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -44,8 +44,8 @@ module.exports = {
           };
           break;
         case "week":
-          first = moment().tz("UTC").startOf("week").toDate();
-          last = moment().tz("UTC").endOf("week").toDate();
+          first = moment().startOf("week").toDate();
+          last = moment().endOf("week").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -53,8 +53,8 @@ module.exports = {
           };
           break;
         case "month":
-          first = moment().tz("UTC").startOf("month").toDate();
-          last = moment().tz("UTC").endOf("month").toDate();
+          first = moment().startOf("month").toDate();
+          last = moment().endOf("month").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -62,8 +62,8 @@ module.exports = {
           };
           break;
         case "year":
-          first = moment().tz("UTC").startOf("year").toDate();
-          last = moment().tz("UTC").endOf("year").toDate();
+          first = moment().startOf("year").toDate();
+          last = moment().endOf("year").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -71,8 +71,8 @@ module.exports = {
           };
           break;
         case "tomorrow":
-          first = moment().tz("UTC").endOf("day");
-          last = moment().tz("UTC").add(1, "day").endOf("day");
+          first = moment().endOf("day");
+          last = moment().add(1, "day").endOf("day");
           console.log(first, last);
           dateRange = {
             datetime: {
