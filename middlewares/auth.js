@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const catchError = require("../utils/error");
 
 module.exports = {
-  authenticate: async (req, res, next) => {
+  isLogin: async (req, res, next) => {
     try {
       let token = req.header("Authorization");
       if (!token) {
