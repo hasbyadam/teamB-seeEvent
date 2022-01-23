@@ -1,5 +1,6 @@
 const { Users } = require("../models");
 const jwt = require("jsonwebtoken");
+const catchError = require("../utils/error");
 
 module.exports = {
   authenticate: async (req, res, next) => {
@@ -37,7 +38,7 @@ module.exports = {
       });
       
     } catch (error) {
-      next(error);
+      catchError(error, res);
     }
   },
 };

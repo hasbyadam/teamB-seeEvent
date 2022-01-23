@@ -44,6 +44,7 @@ module.exports = {
             attributes: ["first_name", "last_name", "image"],
           },
         ],
+        order: [["createdAt", "ASC"]],
         attributes: ["id", "description", "createdAt"],
       });
 
