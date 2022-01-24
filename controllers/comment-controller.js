@@ -1,20 +1,34 @@
+const Joi = require("joi");
 const { Comment, Users, Event } = require("../models");
 const catchError = require("../utils/error");
 
 module.exports = {
   postComment: async (req, res) => {
     const body = req.body;
+    const id = req.params.id;
     try {
-      if (req.user.id != body.user_id) {
+      const schema = Joi.object({
+        description: Joi.string().required(),
+        user_id: req.user.id,
+        event_id: id,
+      });
+
+      const { error } = schema.validate({
+        ...body,
+        user_id: req.user.id,
+        event_id: id,
+      });
+      if (error) {
         return res.status(400).json({
           status: "Bad Request",
-          message:
-            "failed to create the data, user.id doesnt match with user_id",
-          result: {},
+          message: error.message,
         });
       }
-
-      const data = await Comment.create(body);
+      const data = await Comment.create({
+        ...body,
+        user_id: req.user.id,
+        event_id: id,
+      });
       if (!data) {
         return res.status(400).json({
           status: "Failed",
@@ -31,7 +45,6 @@ module.exports = {
       catchError(error, res);
     }
   },
-
   getComment: async (req, res) => {
     try {
       const id = req.params.id;

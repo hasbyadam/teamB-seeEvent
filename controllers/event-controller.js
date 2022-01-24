@@ -2,6 +2,7 @@ const { Event, Users, Category } = require("../models");
 const moment = require("moment");
 const { Op } = require("sequelize");
 const catchError = require("../utils/error");
+const Joi = require("joi").extend(require("@joi/date"));
 
 module.exports = {
   getEvents: async (req, res) => {
@@ -192,16 +193,29 @@ module.exports = {
     try {
       const body = req.body;
       const file = req.file;
-      if (req.user.id != body.user_id) {
+      const schema = Joi.object({
+        title: Joi.string().required(),
+        datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss").required(),
+        detail: Joi.string().required(),
+        image: Joi.string().required(),
+        user_id: req.user.id,
+        category_id: Joi.number().required(),
+      });
+      const { error } = schema.validate({
+        ...body,
+        image: file.path,
+        user_id: req.user.id,
+      });
+      if (error) {
         return res.status(400).json({
           status: "Bad Request",
-          message: "failed to create the data, id doesnt match with user_id",
-          result: {},
+          message: error.message,
         });
       }
       const event = await Event.create({
         ...body,
         image: file.path,
+        user_id: req.user.id,
       });
       if (!event) {
         return res.status(500).json({
@@ -221,6 +235,61 @@ module.exports = {
         message: error.message,
         result: {},
       });
+    }
+  },
+  updateEvent: async (req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+    const file = req.file;
+    try {
+      const schema = Joi.object({
+        title: Joi.string(),
+        datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss"),
+        detail: Joi.string(),
+        image: Joi.string(),
+        user_id: req.user.id,
+        category_id: Joi.number(),
+      });
+      const { error } = schema.validate({
+        ...body,
+        image: file.path,
+        user_id: req.user.id,
+      });
+      if (error) {
+        return res.status(400).json({
+          status: "Bad Request",
+          message: error.message,
+        });
+      }
+
+      const update = await Event.update(
+        { ...body, image: file.path, user_id: req.user.id },
+        {
+          where: {
+            id,
+            user_id: req.user.id,
+          },
+        },
+      );
+      if (update[0] != 1) {
+        return res.status(500).json({
+          status: "Internal server error",
+          message: "Failed update the data / data not found",
+          result: {},
+        });
+      }
+      const event = await Event.findOne({
+        where: {
+          id,
+        },
+      });
+      res.status(200).json({
+        status: "Success",
+        message: "successfuly update the data",
+        result: event,
+      });
+    } catch (error) {
+      catchError(error, res);
     }
   },
 };

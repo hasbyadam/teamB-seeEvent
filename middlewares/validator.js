@@ -25,12 +25,14 @@ module.exports = {
         const { error } = schema.validate({
           ...body,
           image: file.path,
+          user_id: req.user.id,
         });
-        if (error)
+        if (error) {
           return res.status(400).json({
             status: "Bad Request",
             message: error.message,
           });
+        }
         next();
       } catch (error) {
         catchError(error, res);

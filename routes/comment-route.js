@@ -8,7 +8,7 @@ const {
 const { validate } = require("../middlewares/validator");
 const { postComments } = require("../helpers/joi-schema");
 
-router.post("/", isLogin, validate(postComments), postComment);
+router.post("/:id", isLogin, postComment);
 router.get("/:id", getComment);
 
 module.exports = router;

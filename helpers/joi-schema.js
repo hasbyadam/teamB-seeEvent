@@ -17,17 +17,4 @@ module.exports = {
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),
-  postComments: Joi.object({
-    description: Joi.string().required(),
-    user_id: Joi.number().required(),
-    event_id: Joi.number().required(),
-  }),
-  postEvent: Joi.object({
-    title: Joi.string().required(),
-    datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss").required(),
-    detail: Joi.string().required(),
-    image: Joi.string().required(),
-    user_id: Joi.number().required(),
-    category_id: Joi.number().required(),
-  }),
 };
