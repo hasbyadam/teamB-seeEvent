@@ -89,6 +89,8 @@ module.exports = {
             [Op.iLike]: category,
           },
         };
+      } else {
+        cat = category;
       }
 
       // pagination
