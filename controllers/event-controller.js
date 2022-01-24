@@ -35,8 +35,8 @@ module.exports = {
       let first, last;
       switch (date) {
         case "today":
-          first = moment().startOf("day").toDate();
-          last = moment().endOf("day").toDate();
+          first = moment().tz("UTC").startOf("day").toDate();
+          last = moment().tz("UTC").endOf("day").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -44,8 +44,8 @@ module.exports = {
           };
           break;
         case "week":
-          first = moment().startOf("week").toDate();
-          last = moment().endOf("week").toDate();
+          first = moment().tz("UTC").startOf("week").toDate();
+          last = moment().tz("UTC").endOf("week").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -53,8 +53,8 @@ module.exports = {
           };
           break;
         case "month":
-          first = moment().startOf("month").toDate();
-          last = moment().endOf("month").toDate();
+          first = moment().tz("UTC").startOf("month").toDate();
+          last = moment().tz("UTC").endOf("month").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -62,8 +62,8 @@ module.exports = {
           };
           break;
         case "year":
-          first = moment().startOf("year").toDate();
-          last = moment().endOf("year").toDate();
+          first = moment().tz("UTC").startOf("year").toDate();
+          last = moment().tz("UTC").endOf("year").toDate();
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -71,9 +71,8 @@ module.exports = {
           };
           break;
         case "tomorrow":
-          first = moment().endOf("day");
-          last = moment().add(1, "day").endOf("day");
-          console.log(first, last);
+          first = moment().tz("UTC").endOf("day");
+          last = moment().tz("UTC").add(1, "day").endOf("day");
           dateRange = {
             datetime: {
               [Op.between]: [first, last],
@@ -84,42 +83,12 @@ module.exports = {
 
       // filter by category
       let cat;
-      switch (category) {
-        case "photography":
-          cat = {
-            category_id: "1",
-          };
-          break;
-        case "design":
-          cat = {
-            category_id: "2",
-          };
-          break;
-        case "development":
-          cat = {
-            category_id: "3",
-          };
-          break;
-        case "marketing":
-          cat = {
-            category_id: "4",
-          };
-          break;
-        case "business":
-          cat = {
-            category_id: "5",
-          };
-          break;
-        case "lifestyle":
-          cat = {
-            category_id: "6",
-          };
-          break;
-        case "music":
-          cat = {
-            category_id: "7",
-          };
-          break;
+      if (category) {
+        cat = {
+          name: {
+            [Op.iLike]: category,
+          },
+        };
       }
 
       // pagination
@@ -149,11 +118,13 @@ module.exports = {
             model: Category,
             as: "category",
             attributes: ["name"],
+            where: {
+              ...cat,
+            },
           },
         ],
         where: {
           ...dateRange,
-          ...cat,
           ...search,
         },
         attributes: {
@@ -213,6 +184,41 @@ module.exports = {
       });
     } catch (error) {
       catchError(error, res);
+    }
+  },
+  createEvent: async (req, res) => {
+    try {
+      const body = req.body;
+      const file = req.file;
+      if (req.user.id != body.user_id) {
+        return res.status(400).json({
+          status: "Bad Request",
+          message: "failed to create the data, id doesnt match with user_id",
+          result: {},
+        });
+      }
+      const event = await Event.create({
+        ...body,
+        image: file.path,
+      });
+      if (!event) {
+        return res.status(500).json({
+          status: "Internal server error",
+          message: "Failed to create the data",
+          result: {},
+        });
+      }
+      res.status(201).json({
+        status: "Success",
+        message: "Successfuly to create event",
+        result: event,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "Internal Server Error",
+        message: error.message,
+        result: {},
+      });
     }
   },
 };

@@ -10,6 +10,7 @@ module.exports = {
         return {
           folder: fieldName,
           resource_type: "raw",
+          allowedFormats: "jpg",
           public_id: Date.now() + "-" + file.originalname,
         };
       },
