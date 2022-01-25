@@ -240,10 +240,7 @@ module.exports = {
   updateEvent: async (req, res) => {
     const { id } = req.params;
     const body = req.body;
-    let file;
-    if (req.file) {
-      file = req.file;
-    }
+    const file = req.file;
     try {
       const schema = Joi.object({
         title: Joi.string(),
@@ -261,7 +258,7 @@ module.exports = {
         });
       }
       let update;
-      if (!req.file) {
+      if (!file) {
         update = await Event.update(
           { ...body },
           {
