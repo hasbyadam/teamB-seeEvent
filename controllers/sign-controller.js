@@ -36,10 +36,12 @@ module.exports = {
       res.status(200).json({
         status: "Success",
         message: "Successfully to create an account",
-        result: token,
+        result: {
+          token,
+        },
       });
     } catch (error) {
-      catchError(error, Res);
+      catchError(error, res);
     }
   },
   login: async (req, res) => {

@@ -198,7 +198,7 @@ module.exports = {
         datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss").required(),
         detail: Joi.string().required(),
         image: Joi.string().required(),
-        user_id: req.user.id,
+        user_id: Joi.number().required(),
         category_id: Joi.number().required(),
       });
       const { error } = schema.validate({
@@ -247,7 +247,7 @@ module.exports = {
         datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss"),
         detail: Joi.string(),
         image: Joi.string(),
-        user_id: req.user.id,
+        user_id: Joi.number(),
         category_id: Joi.number(),
       });
       const { error } = schema.validate({
