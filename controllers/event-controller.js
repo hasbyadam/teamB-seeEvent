@@ -240,37 +240,49 @@ module.exports = {
   updateEvent: async (req, res) => {
     const { id } = req.params;
     const body = req.body;
-    const file = req.file;
+    let file;
+    if (req.file) {
+      file = req.file;
+    }
     try {
       const schema = Joi.object({
         title: Joi.string(),
         datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss"),
         detail: Joi.string(),
-        image: Joi.string().required(),
+        image: Joi.string(),
         user_id: Joi.number(),
         category_id: Joi.number(),
       });
-      const { error } = schema.validate({
-        ...body,
-        image: file.path,
-        user_id: req.user.id,
-      });
+      const { error } = schema.validate(body);
       if (error) {
         return res.status(400).json({
           status: "Bad Request",
           message: error.message,
         });
       }
-
-      const update = await Event.update(
-        { ...body, image: file.path, user_id: req.user.id },
-        {
-          where: {
-            id,
-            user_id: req.user.id,
+      let update;
+      if (!req.file) {
+        update = await Event.update(
+          { ...body },
+          {
+            where: {
+              id,
+              user_id: req.user.id,
+            },
           },
-        },
-      );
+        );
+      } else {
+        update = await Event.update(
+          { ...body, image: file.path },
+          {
+            where: {
+              id,
+              user_id: req.user.id,
+            },
+          },
+        );
+      }
+
       if (update[0] != 1) {
         return res.status(500).json({
           status: "Internal server error",
