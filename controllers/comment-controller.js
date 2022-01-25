@@ -9,8 +9,8 @@ module.exports = {
     try {
       const schema = Joi.object({
         description: Joi.string().required(),
-        user_id: req.user.id,
-        event_id: id,
+        user_id: Joi.number().required(),
+        event_id: Joi.number().required(),
       });
 
       const { error } = schema.validate({
