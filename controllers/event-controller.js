@@ -279,7 +279,6 @@ module.exports = {
           },
         );
       }
-
       if (update[0] != 1) {
         return res.status(500).json({
           status: "Internal server error",

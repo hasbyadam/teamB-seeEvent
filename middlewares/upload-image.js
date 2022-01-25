@@ -4,11 +4,8 @@ const cloudinary = require("../config/cloudinary");
 
 module.exports = {
   uploadLocal: (fieldName) => {
-    // membuat storage / setting storage (file disimpan dimana)
     const storage = multer.memoryStorage();
-
-    const upload = multer({ storage }).single(fieldName); // setting uploader
-
+    const upload = multer({ storage }).single(fieldName);
     return (req, res, next) => {
       upload(req, res, (err) => {
         if (err) {
@@ -19,7 +16,6 @@ module.exports = {
     };
   },
   uploadCloud: (fieldName) => {
-    // membuat storage / setting storage (file disimpan dimana)
     const storage = new CloudinaryStorage({
       cloudinary: cloudinary,
       params: (req, file) => {
@@ -38,13 +34,11 @@ module.exports = {
       cb(null, true);
     };
 
-    // 1mb = 1024kb
-    // 1kb = 1024byte
     const upload = multer({
       storage,
       fileFilter,
       limits: { fileSize: 1024 * 1024 * 2 },
-    }).single(fieldName); // setting uploader
+    }).single(fieldName);
 
     return (req, res, next) => {
       upload(req, res, (err) => {
