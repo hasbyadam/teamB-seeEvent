@@ -246,7 +246,7 @@ module.exports = {
         title: Joi.string(),
         datetime: Joi.date().format("YYYY-MM-DD HH:mm:ss"),
         detail: Joi.string(),
-        image: Joi.string(),
+        image: Joi.string().required(),
         user_id: Joi.number(),
         category_id: Joi.number(),
       });
