@@ -114,7 +114,7 @@ module.exports = {
         include: [
           {
             model: Users,
-            as: "created by",
+            as: "createdBy",
             attributes: ["first_name", "last_name", "email", "image"],
           },
           {
@@ -160,7 +160,7 @@ module.exports = {
         include: [
           {
             model: Users,
-            as: "created by",
+            as: "createdBy",
             attributes: ["first_name", "last_name", "email", "image"],
           },
           {
