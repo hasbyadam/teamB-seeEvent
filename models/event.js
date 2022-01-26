@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "category_id",
       });
       Event.hasMany(models.Comment, { as: "comment", foreignKey: "event_id" });
+      Event.belongsToMany(models.Users, {
+        as: "bookmarks",
+        through: "Bookmarks",
+      });
     }
   }
   Event.init(

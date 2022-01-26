@@ -1,11 +1,10 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
-    "database": "eventApp",
+    "password": "1324fairplay",
+    "database": "eventApp_mvp",
     "host": "127.0.0.1",
-    "dialect": "postgres",
-    "port": "3000"
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",

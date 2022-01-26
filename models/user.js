@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Users.hasMany(models.Event, { as: "event", foreignKey: "user_id" });
       Users.hasMany(models.Comment, { as: "comment", foreignKey: "user_id" });
+      Users.belongsToMany(models.Event, {
+        as: "bookmarked",
+        through: "Bookmarks",
+      });
     }
   }
   Users.init(
