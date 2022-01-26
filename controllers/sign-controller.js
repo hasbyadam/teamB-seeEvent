@@ -34,7 +34,7 @@ module.exports = {
           email: user.email,
         },
         process.env.SECRET_TOKEN,
-        { expiresIn: "24h" },
+        { expiresIn: "24h" }
       );
       res.status(200).json({
         status: "Success",
@@ -81,7 +81,7 @@ module.exports = {
           id: user.id,
         },
         process.env.SECRET_TOKEN,
-        { expiresIn: "24h" },
+        { expiresIn: "24h" }
       );
 
       res.status(200).json({
@@ -127,7 +127,7 @@ module.exports = {
         `
       <h1>Password Reset Confirmation</h1>
       <a href="https://localhost:3000/api/v1/sign/forgot?code=${passwordReset.validationCode}">Click Here</a>
-      `,
+      `
       );
       res.status(200).json({
         status: "Success",
@@ -146,7 +146,7 @@ module.exports = {
           .min(5)
           .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])/)
           .message(
-            '"password" should contain a mix of uppercase and lowercase letters, numbers, and special characters ',
+            '"password" should contain a mix of uppercase and lowercase letters, numbers, and special characters '
           )
           .required(),
         validationCode: Joi.string().required(),
@@ -176,7 +176,7 @@ module.exports = {
 
       await Users.update(
         { password: hashPassword },
-        { where: { email: validate.email } },
+        { where: { email: validate.email } }
       );
       await PasswordReset.update(
         { isDone: true },
@@ -184,12 +184,30 @@ module.exports = {
           where: {
             validationCode,
           },
-        },
+        }
       );
       res.status(200).json({
         status: "Success",
         message: "Successfully change the password",
         result: {},
+      });
+    } catch (error) {
+      catchError(error, res);
+    }
+  },
+  loginGoogle: async (req, res) => {
+    try {
+      let payload = {
+        id: req.user.id,
+        email: req.user.email,
+      };
+      const token = jwt.sign(payload, process.env.SECRET_TOKEN);
+      res.status(200).json({
+        status: "Success",
+        message: "Successfully logged in",
+        result: {
+          token,
+        },
       });
     } catch (error) {
       catchError(error, res);
