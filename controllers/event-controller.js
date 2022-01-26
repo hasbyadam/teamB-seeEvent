@@ -230,11 +230,7 @@ module.exports = {
         result: event,
       });
     } catch (error) {
-      return res.status(500).json({
-        status: "Internal Server Error",
-        message: error.message,
-        result: {},
-      });
+      catchError(error, res);
     }
   },
   updateEvent: async (req, res) => {
