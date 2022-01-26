@@ -3,18 +3,6 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
 
 module.exports = {
-  uploadLocal: (fieldName) => {
-    const storage = multer.memoryStorage();
-    const upload = multer({ storage }).single(fieldName);
-    return (req, res, next) => {
-      upload(req, res, (err) => {
-        if (err) {
-          catchHandler(res, err);
-        }
-        next();
-      });
-    };
-  },
   uploadCloud: (fieldName) => {
     const storage = new CloudinaryStorage({
       cloudinary: cloudinary,
