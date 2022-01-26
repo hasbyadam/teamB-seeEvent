@@ -1,7 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { Users } = require("../models");
-const baseUrl = "http://localhost:5000" || "https://team-b-see-event.herokuapp.com"
+const baseUrl = "https://team-b-see-event.herokuapp.com"
 
 passport.use(
   "google",
