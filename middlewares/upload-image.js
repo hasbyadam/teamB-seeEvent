@@ -22,7 +22,7 @@ module.exports = {
         return {
           folder: fieldName,
           resource_type: "raw",
-          public_id: Date.now() + " - " + file.originalname,
+          public_id:`${Date.now()}-${file.originalname}`,
         };
       },
     });
@@ -37,7 +37,6 @@ module.exports = {
     const upload = multer({
       storage,
       fileFilter,
-      limits: { fileSize: 1024 * 1024 * 2 },
     }).single(fieldName);
 
     return (req, res, next) => {
