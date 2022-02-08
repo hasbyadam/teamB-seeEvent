@@ -6,10 +6,8 @@ const {
   createEvent,
   updateEvent,
 } = require("../controllers/event-controller");
-const { postEvent, editEvent } = require("../helpers/joi-schema");
 const { isLogin } = require("../middlewares/auth");
 const { uploadCloud } = require("../middlewares/upload-image");
-const { validateImage } = require("../middlewares/validator");
 
 router.get("/", getEvents);
 router.get("/:id", getEvent);
